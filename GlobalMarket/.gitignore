@@ -1,7 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-/dist
+# removed dist folder from gitignore 5/3/2023
+# /dist
 /tmp
 /out-tsc
 /bazel-out
