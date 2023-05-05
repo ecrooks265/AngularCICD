@@ -3,10 +3,8 @@ import { StockDataService } from '../../services/stock-data.service';
 
 @Component({
   selector: 'app-stock-data',
-  template: `
-    <h1>Stock Data</h1>
-    <p>{{ stockData }}</p>
-  `
+  templateUrl: './stock-data.component.html'
+  
 })
 export class StockDataComponent {
 
