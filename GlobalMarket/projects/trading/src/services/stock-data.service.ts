@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class StockDataService {
   constructor(private http: HttpClient) { }
-  apiUrl = 'http://18.118.120.98:5000/predict';
+  // http://18.118.120.98:5000
+  apiUrl = '/predict';
 
 
   predictStock(ticker: string): Observable<any> {
