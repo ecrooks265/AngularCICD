@@ -8,14 +8,22 @@ import { StockDataService } from '../../services/stock-data.service';
 })
 export class StockDataComponent {
 
-  stockData: any;
-  ticker: string = "AAPL";
+  prediction?: string;
+  ticker = "AAPL";
 
   constructor(private stockDataService: StockDataService) { }
 
   ngOnInit() {
-    this.stockDataService.predictStock(this.ticker).subscribe(data => {
-      this.stockData = data;
-    });
+    this.getPrediction();
+  }
+  getPrediction() {
+    this.stockDataService.predictStock(this.ticker).subscribe(
+      (data: any) => {
+        this.prediction = data.prediction;
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
   }
 }

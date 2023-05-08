@@ -1,2 +1,5 @@
 <div>Apple Stock Prediction</div>
-<div>{{stockData}}</div>
+<div *ngIf="prediction">
+  <p>Predicted stock price for {{ ticker }}:</p>
+  <p>{{ prediction }}</p>
+</div>
