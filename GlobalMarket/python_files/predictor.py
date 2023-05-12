@@ -30,7 +30,7 @@ def predict_stock(ticker):
         df.to_csv(ticker + ".csv")
     
     # Organize data
-    df["Date"] = pd.to_datetime(df["Date"],format='%Y-%m-%d', utc = True).dt.tz_localize('UTC')
+    df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d %H:%M:%S-%z', utc=True).dt.tz_convert('UTC')
 
     df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
 
