@@ -12,7 +12,7 @@ export class StockDataService {
 
 
   predictStock(ticker: string): Observable<any> {
-    const url = `${this.apiUrl}?ticker=${ticker}`;
+    const url =  `http://18.118.120.98:5000${this.apiUrl}?ticker=${ticker}`;
     return this.http.get<any>(url);
   }
 }
