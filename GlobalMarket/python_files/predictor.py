@@ -26,7 +26,7 @@ def predict_stock(ticker):
         df = pd.read_csv(ticker + ".csv")
     else:
         stock = get_data(ticker)
-        df = stock.history(period="max")
+        df = stock
         df.to_csv(ticker + ".csv")
     
     # Organize data
