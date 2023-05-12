@@ -18,7 +18,7 @@ def get_data(ticker):
         stock_data = yf.Ticker(ticker).history(period="max")
     except ValueError:
         stock_data = yf.Ticker("^" + ticker).history(period="max")
-    return stock_data
+    return stock_data.reset_index()
 
 def predict_stock(ticker):
     # Load data
