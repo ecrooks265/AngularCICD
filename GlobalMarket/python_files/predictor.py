@@ -66,10 +66,10 @@ def predict_stock(ticker):
     
     return y_pred[0][0]
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST', 'GET'])
 def predict():
 
-    ticker = request.json['ticker']
+    ticker = request.args.get('ticker')
     prediction = predict_stock(ticker)
     return jsonify({'prediction': prediction})
 
