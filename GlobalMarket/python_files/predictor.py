@@ -5,8 +5,12 @@ import os
 import datetime as dt
 import torch
 import joblib
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
+
 
 def get_data(ticker):
     ###catch instances where ticker has a ^ preceding it
