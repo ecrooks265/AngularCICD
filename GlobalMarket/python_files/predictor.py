@@ -38,7 +38,7 @@ def predict_stock(ticker):
     del df["Stock Splits"]
     df["Tomorrow"] = df["Close"].shift(-1)
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
-    df["Date"] = pd.to_datetime(df["Date"])
+    df["Date"] = pd.to_datetime(df["Date"], utc=True).dt.tz_convert("US/Central") - dt.timedelta(hours=5)
     df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
 
     # Set the index as a datetime object
