@@ -41,16 +41,20 @@ def predict_stock(ticker):
     df = df.loc[pd.to_datetime("1990-01-01", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5):].copy()
 
     # Create new predictors
-    horizons = [2,5,60,250,1000]
+    horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
     for horizon in horizons:
         numeric_columns = df.select_dtypes(include=[np.number]).columns
         rolling_averages = df[numeric_columns].rolling(horizon).mean()
         ratio_column = f"Close_Ratio_{horizon}"
         df[ratio_column] = df["Close"] / rolling_averages["Close"]
+
+        # Convert Target column to numeric
+        df["Target"] = pd.to_numeric(df["Target"], errors="coerce")
+
         trend_column = f"Trend_{horizon}"
         df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
-        new_predictors+= [ratio_column, trend_column]
+        new_predictors += [ratio_column, trend_column]
     df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
     
     # Load model
