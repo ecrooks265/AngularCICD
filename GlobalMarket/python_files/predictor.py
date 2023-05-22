@@ -40,7 +40,7 @@ def predict_stock(ticker):
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
     df = df.loc[pd.to_datetime("1990-01-01", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5):].copy()
 
-    # Create new predictors
+     # Create new predictors
     horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
     for horizon in horizons:
@@ -56,6 +56,7 @@ def predict_stock(ticker):
         df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
         new_predictors += [ratio_column, trend_column]
     df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
+    df = df.dropna(subset=["Target"])  # Drop rows with non-numeric values in Target column
     
     # Load model
     model = joblib.load("model.pkl")
