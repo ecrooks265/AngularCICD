@@ -47,7 +47,6 @@ def predict_stock(ticker):
     df["Tomorrow"] = df["Close"].shift(-1)
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
     df.index = df["Date"]
-    del df["Date"]
 
     # Set the index as a datetime object
     df.index = pd.to_datetime(df.index)
