@@ -30,15 +30,14 @@ def predict_stock(ticker):
         df.to_csv(ticker + ".csv")
     
     # Organize data
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z")
-    df.index = df["Date"].dt.tz_localize(None)
+    df.index = pd.to_datetime(df["Date"], utc=True).dt.tz_convert("US/Central") - dt.timedelta(hours=5)
     #df.index = pd.to_datetime(df.index, format="%Y-%m-%d", utc = True).tz_convert("US/Central") - dt.timedelta(hours=5)
 
     del df["Dividends"]
     del df["Stock Splits"]
     df["Tomorrow"] = df["Close"].shift(-1)
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
-    df = df.loc[pd.to_datetime("1990-01-01",format="%Y-%m-%d %H:%M:%S%z"):].copy()
+    df = df.loc[pd.to_datetime("1990-01-01", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5):].copy()
 
     # Create new predictors
     horizons = [2,5,60,250,1000]
