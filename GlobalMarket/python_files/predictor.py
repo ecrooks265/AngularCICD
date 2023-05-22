@@ -31,7 +31,7 @@ def predict_stock(ticker):
         df.to_csv(ticker + ".csv")
     
     # Organize data
-    df.index = pd.to_datetime(df["Date"], utc=True).dt.tz_convert("US/Central") - dt.timedelta(hours=5)
+    df.index = pd.to_datetime(df["Date"]).dt.tz_convert("US/Central") - dt.timedelta(hours=5)
     #df.index = pd.to_datetime(df.index, format="%Y-%m-%d", utc = True).tz_convert("US/Central") - dt.timedelta(hours=5)
 
     del df["Dividends"]
