@@ -40,6 +40,8 @@ def predict_stock(ticker):
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
     df = df.loc[pd.to_datetime("1990-01-01", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5):].copy()
 
+    # Set the index as a datetime object
+    df.index = pd.to_datetime(df.index)
      # Create new predictors
     horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
