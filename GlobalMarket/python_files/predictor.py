@@ -35,7 +35,8 @@ def predict_stock(ticker):
     print(df.head())
    
     # Organize data
-    df.index = pd.to_datetime(df["Date"]).dt.tz_convert("US/Central") - dt.timedelta(hours=5)
+    df["Date"] = pd.to_datetime(df["Date"])
+    df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
 
     # Print the data frame after modification
     print("After modification:")
@@ -79,7 +80,6 @@ def predict_stock(ticker):
         y_pred = y_pred_tensor.detach().numpy()
     
     return y_pred[0][0]
-
 
 
 @app.route('/predict', methods=['POST', 'GET'])
