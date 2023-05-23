@@ -33,17 +33,12 @@ def predict_stock(ticker):
     # Print the data frame before modification
     print("Before modification:")
     print(df.head())
-    print("Date column format before conversion:")
-    print(df["Date"].dtype)
 
-    # Organize data
-    df["Date"] = pd.to_datetime(df["Date"], infer_datetime_format=True)
-    print("Data types after conversion:")
-    print(df.dtypes)
-    print("Date column format after conversion:")
-    print(df["Date"].head())
+    # Convert "Date" column to datetime
+    df["Date"] = pd.to_datetime(df["Date"], infer_datetime_format=True, utc=True)
 
-    df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
+    # Convert timezone to "US/Central"
+    df["Date"] = df["Date"].dt.tz_convert("US/Central") - pd.Timedelta(hours=5)
 
     # Print the data frame after modification
     print("After modification:")
