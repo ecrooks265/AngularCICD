@@ -58,33 +58,40 @@ def predict_stock(ticker):
     # Set the index as a datetime object
     df.index = pd.to_datetime(df.index)
     # Create new predictors
+    print("Creating new predictors...")
     horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
-    for horizon in horizons:
-        numeric_columns = df.select_dtypes(include=[np.number]).columns
-        rolling_averages = df[numeric_columns].rolling(horizon).mean()
-        ratio_column = f"Close_Ratio_{horizon}"
-        df[ratio_column] = df["Close"] / rolling_averages["Close"]
+    try:
 
-        trend_column = f"Trend_{horizon}"
-        df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
-        new_predictors += [ratio_column, trend_column]
-    df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
-    df = df.dropna(subset=["Target"])  # Drop rows with non-numeric values in Target column
+      for horizon in horizons:
+          numeric_columns = df.select_dtypes(include=[np.number]).columns
+          rolling_averages = df[numeric_columns].rolling(horizon).mean()
+          ratio_column = f"Close_Ratio_{horizon}"
+          df[ratio_column] = df["Close"] / rolling_averages["Close"]
+
+          trend_column = f"Trend_{horizon}"
+          df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
+          new_predictors += [ratio_column, trend_column]
+      df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
+      df = df.dropna(subset=["Target"])  # Drop rows with non-numeric values in Target column
     
-    # Load model
-    model = joblib.load("model.pkl")
+      # Load model
+      model = joblib.load("model.pkl")
     
-    # Preprocess data
-    X = df[new_predictors].values.astype('float32')
+      # Preprocess data
+      X = df[new_predictors].values.astype('float32')
     
-    # Make prediction
-    with torch.no_grad():
-        X_tensor = torch.from_numpy(X)
-        y_pred_tensor = model(X_tensor)
-        y_pred = y_pred_tensor.detach().numpy()
+      # Make prediction
+      with torch.no_grad():
+          X_tensor = torch.from_numpy(X)
+          y_pred_tensor = model(X_tensor)
+          y_pred = y_pred_tensor.detach().numpy()
     
-    return y_pred[0][0]
+      return y_pred[0][0]
+    except Exception as e:
+      print("Error occurred during predictor creation:")
+      print(e)
+      return None
 
 
 @app.route('/predict', methods=['POST', 'GET'])
