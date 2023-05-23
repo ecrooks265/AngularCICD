@@ -36,9 +36,11 @@ def predict_stock(ticker):
     print("Data types after preprocess")
     print(df.dtypes)
 
-    df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d', utc=True).tz_localize(None)
-    df.index = df["Date"].dt.tz_localize(None)
-    df.index = pd.to_datetime(df.index, format="%Y-%m-%d", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5)
+    df["Date"] = pd.to_datetime(df["Date"], format='mixed')
+    df["Date"] = df["Date"].dt.tz_localize(None)
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5)
+    df.set_index("Date", inplace=True)
+
     del df["Date"]
     del df["Dividends"]
     del df["Stock Splits"]
