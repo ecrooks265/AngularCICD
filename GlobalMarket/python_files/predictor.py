@@ -33,6 +33,8 @@ def predict_stock(ticker):
     # Print the data frame before modification
     print("Before modification:")
     print(df.head())
+    print("Data types before modification:")
+    print(df.dtypes)
 
     # Convert "Date" column to datetime
     df["Date"] = pd.to_datetime(df["Date"], infer_datetime_format=True, utc=True)
@@ -43,6 +45,8 @@ def predict_stock(ticker):
     # Print the data frame after modification
     print("After modification:")
     print(df.head())
+    print("Data types after modification:")
+    print(df.dtypes)
 
 
 
@@ -57,13 +61,10 @@ def predict_stock(ticker):
     horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
     for horizon in horizons:
-        numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
-        rolling_averages = df[numeric_columns[1:]].rolling(horizon).mean()
+        numeric_columns = df.select_dtypes(include=[np.number]).columns
+        rolling_averages = df[numeric_columns].rolling(horizon).mean()
         ratio_column = f"Close_Ratio_{horizon}"
         df[ratio_column] = df["Close"] / rolling_averages["Close"]
-
-        # Convert Target column to numeric
-        df["Target"] = pd.to_numeric(df["Target"], errors="coerce")
 
         trend_column = f"Trend_{horizon}"
         df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
