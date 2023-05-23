@@ -33,17 +33,20 @@ def predict_stock(ticker):
     # Print the data frame before modification
     print("Before modification:")
     print(df.head())
-   
+    print("Date column format before conversion:")
+    print(df["Date"].dtype)
+
     # Organize data
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z")
     print("Date column format after conversion:")
     print(df["Date"].head())
-    
+
     df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
 
     # Print the data frame after modification
     print("After modification:")
     print(df.head())
+
 
 
     del df["Dividends"]
