@@ -22,25 +22,25 @@ def get_data(ticker):
     return stock_data.reset_index()
 
 def predict_stock(ticker):
-    # Load data
+       # Load data
     if ticker + ".csv" in os.listdir("."):
         df = pd.read_csv(ticker + ".csv")
     else:
         stock = get_data(ticker)
         df = stock
         df.to_csv(ticker + ".csv")
-    
+
     # Print the data frame before modification
     print("Before modification:")
     print(df.head())
-   
+
     # Organize data
-    df["Date"] = pd.to_datetime(df["Date"])
-    df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
+    df.index = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z").tz_convert("US/Central") - dt.timedelta(hours=5)
 
     # Print the data frame after modification
     print("After modification:")
     print(df.head())
+
 
     del df["Dividends"]
     del df["Stock Splits"]
