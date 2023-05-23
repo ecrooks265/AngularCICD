@@ -57,8 +57,8 @@ def predict_stock(ticker):
     horizons = [2, 5, 60, 250, 1000]
     new_predictors = []
     for horizon in horizons:
-        numeric_columns = df.select_dtypes(include=[np.number]).columns
-        rolling_averages = df[numeric_columns].rolling(horizon).mean()
+        numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+        rolling_averages = df[numeric_columns[1:]].rolling(horizon).mean()
         ratio_column = f"Close_Ratio_{horizon}"
         df[ratio_column] = df["Close"] / rolling_averages["Close"]
 
