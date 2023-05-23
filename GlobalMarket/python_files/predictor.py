@@ -34,7 +34,7 @@ def predict_stock(ticker):
     print("Date before preprocess")
     print(df.head())
     print("Data types after preprocess")
-    print(df.dftypes())
+    print(df.dftypes)
 
     df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d', utc=True).dt.tz_localize(None)
     df.index = df["Date"].dt.tz_localize(None)
@@ -49,7 +49,7 @@ def predict_stock(ticker):
     print("Date after preprocess")
     print(df.head())
     print("Data types after preprocess")
-    print(df.dftypes())
+    print(df.dftypes)
 
     df = df.loc[pd.to_datetime("1990-01-01", format='%Y-%m-%d', utc=True).tz_localize(None):].copy()
 
@@ -69,7 +69,7 @@ def predict_stock(ticker):
     print("Date after for loop for horizons")
     print(df.head())
     print("Data types after for loop for horizons")
-    print(df.dftypes())
+    print(df.dftypes)
     # Load model
     model = joblib.load("model.pkl")
     
