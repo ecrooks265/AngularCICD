@@ -31,6 +31,11 @@ def predict_stock(ticker):
         df.to_csv(ticker + ".csv")
 
     # preprocess data
+    print("Date before preprocess")
+    print(df.head())
+    print("Data types after preprocess")
+    print(df.types())
+
     df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d', utc=True).dt.tz_localize(None)
     df.index = df["Date"].dt.tz_localize(None)
     df.index = pd.to_datetime(df.index, format="%Y-%m-%d", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5)
@@ -40,6 +45,11 @@ def predict_stock(ticker):
 
     df["Tomorrow"] = df["Close"].shift(-1)
     df["Target"] = (df["Tomorrow"] > df["Close"]).astype(int)
+
+    print("Date after preprocess")
+    print(df.head())
+    print("Data types after preprocess")
+    print(df.types())
 
     df = df.loc[pd.to_datetime("1990-01-01", format='%Y-%m-%d', utc=True).tz_localize(None):].copy()
 
@@ -56,7 +66,10 @@ def predict_stock(ticker):
         new_predictors += [ratio_column, trend_column]
     df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
 
-    
+    print("Date after for loop for horizons")
+    print(df.head())
+    print("Data types after for loop for horizons")
+    print(df.types())
     # Load model
     model = joblib.load("model.pkl")
     
