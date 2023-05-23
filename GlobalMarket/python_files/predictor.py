@@ -29,13 +29,17 @@ def predict_stock(ticker):
         stock = get_data(ticker)
         df = stock
         df.to_csv(ticker + ".csv")
-
+    
     # Print the data frame before modification
     print("Before modification:")
     print(df.head())
-
+   
     # Organize data
-    df.index = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z").tz_convert("US/Central") - dt.timedelta(hours=5)
+    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z")
+    print("Date column format after conversion:")
+    print(df["Date"].head())
+    
+    df.index = df["Date"].dt.tz_convert("US/Central") - dt.timedelta(hours=5)
 
     # Print the data frame after modification
     print("After modification:")
