@@ -37,7 +37,7 @@ def predict_stock(ticker):
     print(df["Date"].dtype)
 
     # Organize data
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d %H:%M:%S%z")
+    df["Date"] = pd.to_datetime(df["Date"], infer_datetime_format=True)
     print("Data types after conversion:")
     print(df.dtypes)
     print("Date column format after conversion:")
