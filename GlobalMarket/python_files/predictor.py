@@ -69,9 +69,21 @@ def predict_stock(ticker):
           ratio_column = f"Close_Ratio_{horizon}"
           df[ratio_column] = df["Close"] / rolling_averages["Close"]
 
+          print("After applying rolling function:")
+          print(df.head())
+          print("Data types after applying rolling function:")
+          print(df.dtypes)
+
           trend_column = f"Trend_{horizon}"
           df[trend_column] = df.shift(1).rolling(horizon).sum()["Target"]
+
+          print("After applying rolling and shifting:")
+          print(df.head())
+          print("Data types after applying rolling and shifting:")
+          print(df.dtypes)
+
           new_predictors += [ratio_column, trend_column]
+
       df = df.dropna(subset=df.columns[df.columns != "Tomorrow"])
       df = df.dropna(subset=["Target"])  # Drop rows with non-numeric values in Target column
     
