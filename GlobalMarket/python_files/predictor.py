@@ -38,7 +38,7 @@ def predict_stock(ticker):
 
     df["Date"] = pd.to_datetime(df["Date"], format='mixed')
     df["Date"] = df["Date"].tz_localize(None)
-    df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5)
+    df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d %H:%M:%S%z').tz_convert("US/Central") - dt.timedelta(hours=5)
     df.set_index("Date", inplace=True)
 
     del df["Date"]
