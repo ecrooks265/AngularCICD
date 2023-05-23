@@ -37,8 +37,10 @@ def predict_stock(ticker):
     print(df.dtypes)
 
     df["Date"] = pd.to_datetime(df["Date"], format='%Y-%m-%d %H:%M:%S%z').dt.tz_convert("US/Central")
+
+
     df.index = df["Date"].dt.tz_localize(None)
-    df.index = pd.to_datetime(df.index, format="%Y-%m-%d", utc=True).tz_convert("US/Central") - dt.timedelta(hours=5)
+    df.index = pd.to_datetime(df["Date"], format='%Y-%m-%d %H:%M:%S%z').dt.tz_convert("US/Central")
     del df["Date"]
     del df["Dividends"]
     del df["Stock Splits"]
